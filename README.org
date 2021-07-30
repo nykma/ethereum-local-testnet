@@ -1,0 +1,78 @@
+#+AUTHOR: Nyk Ma <i@nyk.ma>
+
+* Ethereum local testnet deployment
+  :PROPERTIES:
+  :ID:       9990be5f-6a5a-4e1d-b8e5-828413513ae5
+  :END:
+
+** Preparation
+   :PROPERTIES:
+   :ID:       fa0674de-4fcb-40f2-8adc-be56487d207f
+   :END:
+
+   Install =geth= with your OS' package manager.
+
+   The =geth= and =puppeth= executable will be used.
+
+
+** Steps
+   :PROPERTIES:
+   :ID:       cac54982-bbcc-4013-b859-f44fca39f0ca
+   :END:
+
+   1. Modify =networkname= as you wish in =Makefile=
+
+      #+begin_quote
+      =networkname= must be all losercase letters or =-=
+      #+end_quote
+
+   2. Init a genesis config using =puppeth=:
+
+       #+begin_src sh
+         make init
+       #+end_src
+
+      For more info or configuration, please refer to any =puppeth= tutorial blog.
+
+   3. Export the genesis into =.json= s (=Manage existing genesis= -> =Export genesis configurations= in =puppeth=)
+
+   4. Init genesis block using =geth=:
+
+      #+begin_src sh
+        make geth-init
+      #+end_src
+
+   5. Create a genesis wallet account (also works as the first miner):
+
+      #+begin_src sh
+        make create-account
+      #+end_src
+
+      Make sure no password is given. (Simply press enter when prompting password)
+
+   6. Run (and mine) it:
+
+      #+begin_src sh
+        make run
+      #+end_src
+
+   7. Switch your MetaMask to =Localhost 8545= RPC server. No error should appear.
+
+   8. Use console to transfer some coin to your existed wallet account:
+
+      #+begin_src sh
+        make console
+      #+end_src
+
+      #+begin_src javascript
+        eth.sendTransaction({from: eth.coinbase, to: '0xMYWALLETHASH', value: web3.toWei(10, "ether")})
+      #+end_src
+
+   9. Done. RPC server is =http://localhost:8545=.
+
+** Reference
+   :PROPERTIES:
+   :ID:       7e6ff595-574f-4225-bce0-f16f793d25af
+   :END:
+
+   - [[https://hackernoon.com/hands-on-creating-your-own-local-private-geth-node-beginner-friendly-3d45902cc612][Hands On: Creating Your Own Local Private Geth Node (Beginner Friendly)]]
